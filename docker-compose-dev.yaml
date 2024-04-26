@@ -8,9 +8,7 @@ services:
     volumes:
       - anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/
     networks:
-      - net-traefik
-      - outline
-      - postgres
+      - mh-network
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.wiki.entrypoints=web"
