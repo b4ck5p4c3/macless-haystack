@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  anisette:
+    image: dadoum/anisette-v3-server
+    container_name: anisette
+    restart: always
+    volumes:
+      - anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/
+    networks:
+      - mh-network
+
+  macless-haystack:
+    container_name: macless-haystack
+    build:
+      context: ./endpoint
+      dockerfile: macless-haystack.prod.dockerfile
+    env_file:
+      - .env
+    restart: unless-stopped
+    ports:
+      - "6176:6176"
+    volumes:
+      - mh_data:/app/endpoint/data
+    networks:
+      - mh-network
+
+  macless-haystack-frontend:
+    container_name: macless-haystack-frontend
+    build:
+      context: ./macless_haystack
+      dockerfile: macless-haystack-frontend.prod.dockerfile
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+    networks:
+      - mh-network
+
+networks:
+  mh-network:
+    driver: bridge
+
+volumes:
+  anisette-v3_data:
+  mh_data:

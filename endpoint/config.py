@@ -19,6 +19,8 @@ config.read(getConfigPath() + '/config.ini')
 
 
 def getAnisetteServer():
+    if os.environ['ANISETTE_URL']:
+        return os.environ['ANISETTE_URL']
     value = config.get('Settings', 'anisette_url')
     if not value:
         return 'http://anisette:6969'
@@ -40,10 +42,14 @@ def getBindingAddress():
 
 
 def getUser():
+    if os.environ['APPLE_ID']:
+        return os.environ['APPLE_ID']
     return config.get('Settings', 'appleid', fallback=None)
 
 
 def getPass():
+    if os.environ['APPLE_ID_PASS']:
+        return os.environ['APPLE_ID_PASS']
     return config.get('Settings', 'appleid_pass', fallback=None)
 
 
@@ -60,14 +66,20 @@ def getKeyFile():
 
 
 def getEndpointUser():
+    if os.environ['ENDPOINT_USER']:
+        return os.environ['ENDPOINT_USER']
     return config.get('Settings', 'endpoint_user', fallback=None)
 
 
 def getEndpointPass():
+    if os.environ['ENDPOINT_PASS']:
+        return os.environ['ENDPOINT_PASS']
     return config.get('Settings', 'endpoint_pass', fallback=None)
 
 
 def getLogLevel():
+    if os.environ['LOGLEVEL']:
+        return os.environ['LOGLEVEL']
     logLevel = config.get('Settings', 'loglevel', fallback='INFO')
     return logging.getLevelName(logLevel)
 
