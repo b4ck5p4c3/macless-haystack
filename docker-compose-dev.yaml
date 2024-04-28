@@ -19,7 +19,7 @@ services:
       - .env
     restart: unless-stopped
     volumes:
-      - mh_data:/app/endpoint/data
+      - mh_data:/app/data
     networks:
       - mh-network
       - net-traefik
