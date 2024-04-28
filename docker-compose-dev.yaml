@@ -9,11 +9,6 @@ services:
       - anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/
     networks:
       - mh-network
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.wiki.entrypoints=web"
-      - "traefik.http.routers.wiki.rule=Host(`wiki.dev.0x08.in`)"
-      - "traefik.http.services.wiki-svc.loadbalancer.server.port=3000"
 
   macless-haystack:
     container_name: macless-haystack
@@ -30,9 +25,10 @@ services:
       - net-traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wiki.entrypoints=web"
-      - "traefik.http.routers.wiki.rule=Host(`mh.dev.0x08.in`)"
-      - "traefik.http.services.wiki-svc.loadbalancer.server.port=6176"
+      - "traefik.http.routers.mh.entrypoints=web"
+      - "traefik.http.routers.mh.rule=Host(`mh.dev.0x08.in`)"
+      - "traefik.http.routers.mh.service=mh"
+      - "traefik.http.services.mh-svc.loadbalancer.server.port=6176"
     depends_on:
       - anisette
 
@@ -46,9 +42,10 @@ services:
       - net-traefik
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.wiki.entrypoints=web"
-      - "traefik.http.routers.wiki.rule=Host(`findmy.dev.0x08.in`)"
-      - "traefik.http.services.wiki-svc.loadbalancer.server.port=80"
+      - "traefik.http.routers.findmy.entrypoints=web"
+      - "traefik.http.routers.findmy.rule=Host(`findmy.dev.0x08.in`)"
+      - "traefik.http.routers.findmy.service=findmy"
+      - "traefik.http.services.findmy-svc.loadbalancer.server.port=80"
 
 
 networks:
