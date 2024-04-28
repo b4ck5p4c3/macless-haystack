@@ -28,7 +28,7 @@ services:
       - "traefik.http.routers.mh.entrypoints=web"
       - "traefik.http.routers.mh.rule=Host(`mh.dev.0x08.in`)"
       - "traefik.http.routers.mh.service=mh"
-      - "traefik.http.services.mh-svc.loadbalancer.server.port=6176"
+      - "traefik.http.services.mh.loadbalancer.server.port=6176"
     depends_on:
       - anisette
 
@@ -45,7 +45,7 @@ services:
       - "traefik.http.routers.findmy.entrypoints=web"
       - "traefik.http.routers.findmy.rule=Host(`findmy.dev.0x08.in`)"
       - "traefik.http.routers.findmy.service=findmy"
-      - "traefik.http.services.findmy-svc.loadbalancer.server.port=80"
+      - "traefik.http.services.findmy.loadbalancer.server.port=80"
 
 
 networks:
