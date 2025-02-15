@@ -7,8 +7,6 @@ services:
     restart: always
     volumes:
       - anisette-v3_data:/home/Alcoholic/.config/anisette-v3/lib/
-    networks:
-      - mh-network
 
   macless-haystack:
     container_name: macless-haystack
@@ -20,15 +18,6 @@ services:
     restart: unless-stopped
     volumes:
       - mh_data:/app/data
-    networks:
-      - mh-network
-      - net-traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.mh.entrypoints=web"
-      - "traefik.http.routers.mh.rule=Host(`mh.dev.0x08.in`)"
-      - "traefik.http.routers.mh.service=mh-svc"
-      - "traefik.http.services.mh-svc.loadbalancer.server.port=6176"
     depends_on:
       - anisette
 
@@ -38,21 +27,6 @@ services:
       context: ./macless_haystack
       dockerfile: macless-haystack-frontend.prod.dockerfile
     restart: unless-stopped
-    networks:
-      - net-traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.findmy.entrypoints=web"
-      - "traefik.http.routers.findmy.rule=Host(`findmy.dev.0x08.in`)"
-      - "traefik.http.routers.findmy.service=findmy-svc"
-      - "traefik.http.services.findmy-svc.loadbalancer.server.port=80"
-
-
-networks:
-  mh-network:
-    driver: bridge
-  net-traefik:
-    external: true
 
 volumes:
   anisette-v3_data:
