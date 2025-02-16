@@ -20,7 +20,7 @@ services:
       - mh_data:/app/data
     networks:
       - mh-network
-      - net-traefik
+      - traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.mh.entrypoints=web"
