@@ -6,6 +6,6 @@ COPY . /app/endpoint
 WORKDIR /app
 
 # Configure python
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r endpoint/requirements.txt
 # Update server files on startup
 CMD ["sh", "-c", "python3 -u endpoint/mh_endpoint.py"]
