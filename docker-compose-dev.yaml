@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   anisette:
     image: dadoum/anisette-v3-server
@@ -36,7 +34,7 @@ services:
 networks:
   mh-network:
     driver: bridge
-  net-traefik:
+  traefik:
     external: true
 
 volumes:
