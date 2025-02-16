@@ -8,4 +8,4 @@ WORKDIR /endpoint
 # Configure python
 RUN pip install --no-cache-dir -r requirements.txt
 # Update server files on startup
-CMD ["sh", "-c", "python mh_endpoint.py"]
+CMD ["sh", "-c", "python3 -u /endpoint/mh_endpoint.py"]
