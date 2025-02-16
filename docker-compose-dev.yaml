@@ -32,21 +32,6 @@ services:
     depends_on:
       - anisette
 
-  macless-haystack-frontend:
-    container_name: macless-haystack-frontend
-    build:
-      context: ./macless_haystack
-      dockerfile: macless-haystack-frontend.prod.dockerfile
-    restart: unless-stopped
-    networks:
-      - net-traefik
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.findmy.entrypoints=web"
-      - "traefik.http.routers.findmy.rule=Host(`findmy.dev.0x08.in`)"
-      - "traefik.http.routers.findmy.service=findmy-svc"
-      - "traefik.http.services.findmy-svc.loadbalancer.server.port=80"
-
 
 networks:
   mh-network:
