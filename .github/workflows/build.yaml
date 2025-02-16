@@ -49,7 +49,7 @@ jobs:
           push: true
           file: ./endpoint/Dockerfile_dev
           tags: christld/macless-haystack:latest-dev,christld/macless-haystack:v${{ env.VERSION }}-${{ github.sha }},   
-      - name: Build and push docker development image
+      - name: Build and push docker main image
         if: github.ref == 'refs/heads/main'  
         uses: docker/build-push-action@v5
         with:
@@ -59,7 +59,7 @@ jobs:
           tags: christld/macless-haystack:latest,christld/macless-haystack:v${{ env.VERSION }},        
       - name: Install ARM Toolchain
         uses: carlosperate/arm-none-eabi-gcc-action@v1
-        with: 
+        with:
           release: '10-2020-q4'
       - name: Install Nordic Toolchain
         run: |
@@ -69,14 +69,14 @@ jobs:
         with:
           distribution: 'zulu'
           java-version: '17'
-          cache: 'gradle'
-
       - name: Cache Flutter dependencies
         uses: actions/cache@v3
         with:
           path: /opt/hostedtoolcache/flutter
           key: ${{ runner.OS }}-flutter-install-cache
       - uses: subosito/flutter-action@v2
+        with:
+          cache: true
       - name: GH-Page Build
         working-directory: ./macless_haystack
         run: |
@@ -92,7 +92,7 @@ jobs:
         working-directory: ./macless_haystack
         run: |
           flutter pub get
-          flutter build web --release    
+          flutter build web --release
       - name: Copy files to web application
         run: |
           mkdir -p ./macless_haystack/build/webapplication
@@ -100,17 +100,17 @@ jobs:
           cd ./macless_haystack/build/webapplication
           zip -r webapplication.zip .
       - name: Upload Web Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: webapplication
           path: ./macless_haystack/build/webapplication
       - name: Android Build
         working-directory: ./macless_haystack
         run: |
-          flutter build apk  --release
+          flutter build apk --release --build-name=${{ env.VERSION }}   
           mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/android-application.apk
       - name: Upload Android Artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: android-application
           path: ./macless_haystack/build/app/outputs/flutter-apk/android-application.apk
@@ -122,28 +122,28 @@ jobs:
           key: ${{ runner.os }}-pio
       - uses: actions/setup-python@v4
         with:
-          python-version: '3.10'
+          python-version: '3.13'
       - name: Install PlatformIO Core
         run: pip install --upgrade platformio
       - name: Build NRF5x firmware
         run: |
           cd firmware/nrf5x/
-          make build 
+          make build
           make clean
-          NRF_MODEL=nrf51 make build 
+          NRF_MODEL=nrf51 make build
       - name: Build ESP32 firmware
         run: |
           pio run -d firmware/ESP32/
           cd firmware/ESP32/.pio/build/esp32dev/
           zip -r esp32-firmware.zip firmware.bin partitions.bin bootloader.bin
       - name: Upload firmware
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: esp32-firmware
           path: |
             firmware/ESP32/.pio/build/esp32dev/firmware.bin
             firmware/ESP32/.pio/build/esp32dev/partitions.bin
-            firmware/ESP32/.pio/build/esp32dev/bootloader.bin     
+            firmware/ESP32/.pio/build/esp32dev/bootloader.bin
       - name: Delete old drafts
         uses: hugo19941994/delete-draft-releases@v1.0.0
         env:

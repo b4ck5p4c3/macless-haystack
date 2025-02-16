@@ -54,10 +54,10 @@ class _PreferencesPageState extends State<PreferencesPage> {
   }
 
   getNumberofDaysTile() {
-    return DropDownSettingsTile<int>(
+    return const DropDownSettingsTile<int>(
       title: 'Number of days to fetch location',
       settingKey: numberOfDaysToFetch,
-      values: const <int, String>{
+      values: <int, String>{
         0: "latest location only",
         1: "1",
         2: "2",
@@ -86,7 +86,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
     );
   }
   getUserTile() {
-    return TextInputSettingsTile(
+    return const TextInputSettingsTile(
       initialValue: '',
       settingKey: endpointUser,
       title: 'Username for endpoint',
@@ -94,7 +94,7 @@ class _PreferencesPageState extends State<PreferencesPage> {
   }
 
   getPassTile() {
-    return TextInputSettingsTile(
+    return const TextInputSettingsTile(
       obscureText: true,
       initialValue: '',
       settingKey: endpointPass,
@@ -107,14 +107,14 @@ class _PreferencesPageState extends State<PreferencesPage> {
     return TextButton(
         style: ButtonStyle(
             padding:
-                MaterialStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
-            foregroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+                WidgetStateProperty.all<EdgeInsets>(const EdgeInsets.all(10)),
+            foregroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
                 return Colors.white;
               },
             ),
-            backgroundColor: MaterialStateProperty.resolveWith<Color?>(
-              (Set<MaterialState> states) {
+            backgroundColor: WidgetStateProperty.resolveWith<Color?>(
+              (Set<WidgetState> states) {
                 return Colors.indigo;
               },
             )),

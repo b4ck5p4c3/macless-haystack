@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:macless_haystack/accessory/accessory_battery.dart';
 import 'package:macless_haystack/accessory/accessory_icon_model.dart';
 import 'package:macless_haystack/findMy/find_my_controller.dart';
 import 'package:macless_haystack/location/location_model.dart';
@@ -80,6 +81,10 @@ class Accessory {
   /// The last known locations coordinates
   /// (null if no location known).
   LatLng? _lastLocation;
+
+  /// The last known battery status
+  /// (null if battery data not found)
+  AccessoryBatteryStatus? lastBatteryStatus;
 
   /// A list of known locations over time.
   List<Pair<dynamic, dynamic>> locationHistory = [];
@@ -166,8 +171,6 @@ class Accessory {
     }
   }
 
-
-
   /// The display icon of the accessory.
   IconData get icon {
     IconData? icon = AccessoryIconModel.mapIcon(_icon);
@@ -206,12 +209,16 @@ class Accessory {
         isActive = json['isActive'],
         isDeployed = json['isDeployed'],
         _icon = json['icon'],
-        color = Color(int.parse(json['color'], radix: 16)),
+        color = Color(int.parse(json['color'].substring(0, 8), radix: 16)),
         usesDerivation = json['usesDerivation'] ?? false,
         symmetricKey = json['symmetricKey'],
         lastDerivationTimestamp = json['lastDerivationTimestamp'],
         updateInterval = json['updateInterval'],
         oldestRelevantSymmetricKey = json['oldestRelevantSymmetricKey'],
+        lastBatteryStatus = json['lastBatteryStatus'] != null ? AccessoryBatteryStatus.values.byName(json['lastBatteryStatus']) : null,
+        hashes = json['hashes'] != null
+            ? (json['hashes'] as List).map((e) => e.toString()).toSet()
+            : <String>{},
         additionalKeys =
             json['additionalKeys']?.cast<String>() ?? List.empty() {
     _init();
@@ -236,13 +243,15 @@ class Accessory {
         'isActive': isActive,
         'isDeployed': isDeployed,
         'icon': _icon,
-        'color': color.toString().split('(0x')[1].split(')')[0],
+        'color': color.value.toRadixString(16).padLeft(8, '0'),
         'usesDerivation': usesDerivation,
+        'hashes': hashes.toList(),
         'symmetricKey': symmetricKey,
         'lastDerivationTimestamp': lastDerivationTimestamp,
         'updateInterval': updateInterval,
         'oldestRelevantSymmetricKey': oldestRelevantSymmetricKey,
         'additionalKeys': additionalKeys,
+        ...lastBatteryStatus != null ? {'lastBatteryStatus': lastBatteryStatus!.name} : {}
       };
 
   /// Returns the Base64 encoded hash of the advertisement key
